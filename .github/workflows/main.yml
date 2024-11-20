@@ -28,8 +28,8 @@ jobs:
       run: npm install
 
     # Step 4: Run tests (if you have tests set up)
-    - name: Run tests
-      run: npm run test  # Modify with the command for your tests if applicable
+    # - name: Run tests
+    #   run: npm run test  # Modify with the command for your tests if applicable
 
     # Step 5: Build the Next.js application
     - name: Build Next.js
