@@ -1,0 +1,49 @@
+name: CI/CD for Next.js
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow when pushing to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    
+    steps:
+    # Step 1: Checkout code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Specify Node.js version (adjust as needed)
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 4: Run tests (if you have tests set up)
+    - name: Run tests
+      run: npm run test  # Modify with the command for your tests if applicable
+
+    # Step 5: Build the Next.js application
+    - name: Build Next.js
+      run: npm run build
+
+    # Step 6: Deploy to Vercel (or another hosting service)
+    - name: Deploy to Vercel
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      run: |
+        curl -fsSL https://vercel.com/download -o vercel.tar.gz
+        tar -xzf vercel.tar.gz
+        ./vercel --token $VERCEL_TOKEN --prod --confirm --cwd .  # Deploy to Vercel
+
+    # Optional: You can add more steps to handle notifications or other integrations
