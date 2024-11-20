@@ -3,47 +3,74 @@ name: CI/CD for Next.js
 on:
   push:
     branches:
-      - main  # Trigger the workflow when pushing to the 'main' branch
+      - main # Trigger the action on push to the main branch
   pull_request:
     branches:
-      - main  # Trigger on pull requests to 'main' branch
+      - main # Trigger the action on pull requests to the main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
-    
+    runs-on: ubuntu-latest
+
     steps:
-    # Step 1: Checkout code from the repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js environment
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'  # Specify Node.js version (adjust as needed)
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # You can change the Node.js version as per your requirement
 
-    # Step 3: Install dependencies
-    - name: Install dependencies
-      run: npm install
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
 
-    # Step 4: Run tests (if you have tests set up)
-    # - name: Run tests
-    #   run: npm run test  # Modify with the command for your tests if applicable
+      # Run tests (optional but recommended)
+      - name: Run tests
+        run: |
+          npm run test
 
-    # Step 5: Build the Next.js application
-    - name: Build Next.js
-      run: npm run build
+      # Build the Next.js app
+      - name: Build Next.js app
+        run: |
+          npm run build
 
-    # Step 6: Deploy to Vercel (or another hosting service)
-    - name: Deploy to Vercel
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      run: |
-        curl -fsSL https://vercel.com/download -o vercel.tar.gz
-        tar -xzf vercel.tar.gz
-        ./vercel --token $VERCEL_TOKEN --prod --confirm --cwd .  # Deploy to Vercel
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' # Only deploy on push to the main branch
 
-    # Optional: You can add more steps to handle notifications or other integrations
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Build the Next.js app (again if necessary)
+      - name: Build Next.js app
+        run: |
+          npm run build
+
+      # Deploy to Vercel or other platform (example: Vercel)
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Add your Vercel token in GitHub secrets
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # Add your Vercel project ID in GitHub secrets
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Add your Vercel org ID in GitHub secrets
+        run: |
+          curl -fsSL https://vercel.com/download -o vercel-cli.deb
+          sudo dpkg -i vercel-cli.deb
+          vercel --prod --token $VERCEL_TOKEN
