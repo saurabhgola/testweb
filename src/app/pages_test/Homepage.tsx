@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 
 function Aboutpage() {
-  const [name,setName] = useState();
 
   const hanletext = () => {
-    setName("Hello, I am a developer");
+    alert("Hello, I am a developer");
   };
   return (
     <>
@@ -17,7 +15,6 @@ function Aboutpage() {
       </div>
       <Link href="">Contect</Link>
       <button onClick={() => hanletext()}>Button</button>
-      <h2>{name}</h2>
     </>
   );
 }
