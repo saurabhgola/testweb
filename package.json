@@ -1,6 +1,6 @@
 {
   "name": "next_app",
-  "homepage":"https://github.com/saurabhgola/testweb",
+  "homepage": "https://github.com/saurabhgola/testweb",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
