@@ -1,43 +1,25 @@
-name: CI/CD Pipeline for Next.js
+
+name: React CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main  # Trigger only on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger for pull requests against the main branch
+    branches: 
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  display:
     runs-on: ubuntu-latest
+    env:
+      platform: Azure
+      region: central
+      profile_path: profile/
+      
 
     steps:
-      # Check out the code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'  # Specify the Node.js version you're using
-
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Run Next.js build (optional: run tests here too)
-      - name: Build Next.js application
-        run: npm run build
-
-      # Deploy to production or staging (optional step)
-      - name: Deploy to Vercel or another platform
+      # Check out the code
+      - name: Checkout Code
+        if: ${{ env.platform == 'Azure' }} 
         run: |
-          curl -sL https://github.com/vercel/vercel-action/releases/download/v1.0.0/vercel-action.tar.gz | tar xz
-          ./vercel-action-deploy.sh
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
+          echo "The platform is ${{ env.platform }}"  # Corrected the typo "platfrom"
+          echo "The region is ${{ env.region }}"  # Corrected to use `${{ env.region }}`
