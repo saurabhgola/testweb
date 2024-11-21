@@ -14,7 +14,12 @@ jobs:
       platform: Azure
       region: central
       profile_path: profile/
-      
+
+build:
+  command: npm run build
+  publish: /opt/build/repo/build
+
+
 
     steps:
       # Check out the code
