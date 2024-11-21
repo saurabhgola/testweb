@@ -9,8 +9,8 @@ function Aboutpage() {
   return (
     <>
       <div>
-        <h1 className="text-3xl text-center text-stone-100 mt-[8px]">
-          Aboutpage test welcome
+        <h1 className="text-3xl text-center text-black mt-[8px]">
+          Aboutpage test welcome production
         </h1>
       </div>
       <Link href="">Contect</Link>
