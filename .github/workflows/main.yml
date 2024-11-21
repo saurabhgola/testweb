@@ -2,39 +2,28 @@ name: React CI/CD Pipeline
 
 on:
   push:
-    branches:
+    branches: 
       - main
   workflow_dispatch:
 
 jobs:
-  build:
+  display:
     runs-on: ubuntu-latest
+    env:
+      platform: Azure
+      region: central
+      profile_path: profile/
 
     steps:
       # Check out the code
       - name: Checkout Code
-        uses: actions/checkout@v2
-
-      # Set up Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      # Install dependencies
-      - name: Install dependencies
+        run: |
+          echo "The platform is ${{ env.platform }}"  # Platform variable correctly accessed
+          echo "The region is ${{ env.region }}"      # Region variable correctly accessed
+          
+      # If you need to add more steps, like installing dependencies or building the project:
+      - name: Install Dependencies
         run: npm install
 
-      # Build the project
-      - name: Build
+      - name: Build Project
         run: npm run build
-
-      # Publish build
-      - name: Publish build
-        run: |
-          if [ -d "build" ]; then
-            echo "Build directory exists"
-          else
-            echo "Build directory does not exist"
-            exit 1
-          fi
