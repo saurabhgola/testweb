@@ -10,7 +10,7 @@ function Aboutpage() {
     <>
       <div>
         <h1 className="text-3xl text-center text-black mt-[8px]">
-          Aboutpage test welcome 
+          Aboutpage test welcome test
         </h1>
       </div>
       <Link href="">Contect</Link>

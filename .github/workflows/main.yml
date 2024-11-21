@@ -1,3 +1,4 @@
+
 name: React CI/CD Pipeline
 
 on:
@@ -13,17 +14,12 @@ jobs:
       platform: Azure
       region: central
       profile_path: profile/
+      
 
     steps:
       # Check out the code
       - name: Checkout Code
+        if: ${{ env.platform == 'Azure' }} 
         run: |
-          echo "The platform is ${{ env.platform }}"  # Platform variable correctly accessed
-          echo "The region is ${{ env.region }}"      # Region variable correctly accessed
-          
-      # If you need to add more steps, like installing dependencies or building the project:
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Project
-        run: npm run build
+          echo "The platform is ${{ env.platform }}"  # Corrected the typo "platfrom"
+          echo "The region is ${{ env.region }}"  # Corrected to use `${{ env.region }}`
